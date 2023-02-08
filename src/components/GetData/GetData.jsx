@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Button, Col, Container, Row, Table } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 export default function GetData() {
   const [user, setUser] = useState([]);
@@ -14,16 +15,14 @@ export default function GetData() {
     getAllData();
   }, []);
 
-
   const deleteData = (id) => {
-    axios.delete(`http://localhost:3000/data/${id}`)
-      .then((res) => {
-        if (res.status === 200) {
-          alert("Successfully deleted")
-          setUser(user.filter((el) => el.id !== id))
-        }
-      })
-  }
+    axios.delete(`http://localhost:3000/data/${id}`).then((res) => {
+      if (res.status === 200) {
+        alert("Successfully deleted");
+        setUser(user.filter((el) => el.id !== id));
+      }
+    });
+  };
   return (
     <>
       <Container>
@@ -35,6 +34,7 @@ export default function GetData() {
                   <th>id</th>
                   <th>Full Name</th>
                   <th>Age</th>
+                  <th>Delete && Edit</th>
                 </tr>
               </thead>
               <tbody>
@@ -45,8 +45,14 @@ export default function GetData() {
                         <td>{data.id}</td>
                         <td>{data.name}</td>
                         <td>{data.age}</td>
+                        <Button onClick={() => deleteData(data.id)}>
+                          Delete
+                        </Button>
+                       <Link to={`/result/edit/${data.id}`}>
+                       <Button>Edit</Button>
+                       
+                       </Link>
                       </tr>
-                        <Button onClick={() => deleteData(data.id)}>Delete</Button>
                     </>
                   );
                 })}

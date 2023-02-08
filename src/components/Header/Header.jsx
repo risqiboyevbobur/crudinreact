@@ -18,14 +18,17 @@ export default function Header() {
 
   const postData = (e) => {
     e.preventDefault();
-    axios.post("http://localhost:3000/data", obj).then((res) => {
-      if (res.status === 201) {
-        alert(res.statusText);
-        setAge("");
-        setName("");
-        navigate('/result');
-      }
-    });
+    if(name.length > 7){
+      axios.post("http://localhost:3000/data", obj).then((res) => {
+        if (res.status === 201) {
+          alert(res.statusText);
+          setAge("");
+          setName("");
+          navigate('/result');
+        }
+      });
+    }
+    
   };
 
   return (
@@ -38,22 +41,31 @@ export default function Header() {
                 <Form.Label>Your full name</Form.Label>
                 <Form.Control
                   type="text"
-                  placeholder="Enter your full name"
                   required
                   onChange={(e) => setName(e.target.value)}
                   value={name}
-                />
+                  placeholder="Enter your full name"/>
+
+                      {name.length <= 7 ? <p style={{color:"red"}}>Please enter more word than 7</p> : <p style={{color:"green"}}>Thank you </p> }
+
+
+             
               </Form.Group>
 
               <Form.Group className="mb-3" controlId="formBasicPassword">
-                <Form.Label>Your Age</Form.Label>
+                <Form.Label>Your Age</Form.Label> 
                 <Form.Control
-                  type="text"
-                  placeholder="Enter your Age"
+                  type="number"
+
                   required
                   onChange={(e) => setAge(e.target.value)}
                   value={age}
-                />
+                  placeholder="Enter your Age"/>
+
+                  {age.length < 2 ? <p style={{color:"red"}}>Please enter more number than 2</p> : <p style={{color:"green"}}>Thank you </p> }
+                    
+
+               
               </Form.Group>
               <Button
                 variant="primary"
